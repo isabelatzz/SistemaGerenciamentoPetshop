@@ -19,18 +19,20 @@ public class GerenciaPetshopMAP implements GerenciaPetshop {
 
 
     @Override
-    public void cadastraDadosAnimais(String nome, EspecieAnimal especie, String raca, int idade, String dono) throws animalJaCadastradoException, IOException{
-        if (this.animaisMap.containsKey(nome)){
+    public boolean cadastraDadosAnimais(String nome, EspecieAnimal especie, String raca, int idade, String dono)
+            throws animalJaCadastradoException, IOException {
+        if (this.animaisMap.containsKey(nome)) {
             throw new animalJaCadastradoException("Seu pet já está cadastrado! :)");
         }
-        Animais a = new Animais(nome, especie,raca,idade,dono);
+        Animais a = new Animais(nome, especie, raca, idade, dono);
         this.animaisMap.put(nome, a);
 
         try {
             gravadorDadosPets.salvarDadosAnimais(this.animaisMap);
-        } catch (IOException e){
+        } catch (IOException e) {
             throw new IOException(e);
         }
+        return true; // Retorne true para indicar que o cadastro foi bem-sucedido
     }
 
     @Override
