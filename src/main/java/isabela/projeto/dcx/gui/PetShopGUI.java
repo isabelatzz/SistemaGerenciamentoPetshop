@@ -10,28 +10,35 @@ import java.io.IOException;
 
 public class PetShopGUI extends JFrame {
     JLabel linha1, linha2;
-    ImageIcon logoImg = new ImageIcon("./img/Como-montar-um-Petshop.jpeg");
+    ImageIcon logoImg = new ImageIcon("./img/petshop-onlne.jpg");
     JMenuBar barraDeMenu = new JMenuBar();
     GerenciaPetshop gerenciaPetshop = new GerenciaPetshopMAP();
 
     public PetShopGUI() {
         setTitle("Gestão de PetShop");
-        setSize(800, 600); // Tamanho da janela
+        setSize(700, 600);
         setLocation(150, 150);
         setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         getContentPane().setBackground(Color.white);
 
+        // Configurando Layout principal
+        setLayout(new BorderLayout());
+
+        // Criando labels e adicionando ao painel
         linha1 = new JLabel("Sistema de Gestão de PetShop", JLabel.CENTER);
-        linha1.setForeground(Color.green);
-        linha1.setFont(new Font("Serif", Font.BOLD, 24));
+        linha1.setForeground(Color.black);
+        linha1.setFont(new Font("Serif", Font.BOLD, 25));
 
         linha2 = new JLabel(logoImg, JLabel.CENTER);
 
-        setLayout(new GridLayout(3, 1));
-        add(linha1);
-        add(linha2);
-        add(new JLabel());
+        JPanel panelPrincipal = new JPanel(new GridLayout(2, 3));
+        panelPrincipal.add(linha1);
+        panelPrincipal.add(linha2);
 
+        add(panelPrincipal, BorderLayout.CENTER);
+
+        // Criando menus e itens de menu
         JMenu menuCadastrar = new JMenu("Cadastrar");
         JMenuItem menuCadastrarAnimal = new JMenuItem("Cadastrar Animal");
         menuCadastrar.add(menuCadastrarAnimal);
@@ -44,6 +51,7 @@ public class PetShopGUI extends JFrame {
         JMenuItem menuRemoverAnimal = new JMenuItem("Remover Animal");
         menuRemover.add(menuRemoverAnimal);
 
+        // Adicionando ação aos itens de menu
         menuPesquisarAnimalPorDono.addActionListener(new PetSearchController(gerenciaPetshop, this));
         menuRemoverAnimal.addActionListener(new PetRemoveController(gerenciaPetshop, this));
 
@@ -70,20 +78,24 @@ public class PetShopGUI extends JFrame {
                 if (cadastrou) {
                     JOptionPane.showMessageDialog(this, "Animal cadastrado");
                 } else {
-                    JOptionPane.showMessageDialog(this, "Animal não foi cadastrado. Verifique se já não existia");
+                    JOptionPane.showMessageDialog(this, "Animal não foi cadastrado. Verifique se já não existia.");
                 }
             }
-
-            barraDeMenu.add(menuCadastrar);
-            barraDeMenu.add(menuPesquisar);
-            barraDeMenu.add(menuRemover);
-            setJMenuBar(barraDeMenu);
         });
+
+        // Adicionando menus à barra de menu
+        barraDeMenu.add(menuCadastrar);
+        barraDeMenu.add(menuPesquisar);
+        barraDeMenu.add(menuRemover);
+
+        // Definindo a barra de menu na janela
+        setJMenuBar(barraDeMenu);
     }
 
     public static void main(String[] args) {
-        JFrame framePet = new PetShopGUI();
-        framePet.setVisible(true);
-        framePet.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        SwingUtilities.invokeLater(() -> {
+            JFrame framePet = new PetShopGUI();
+            framePet.setVisible(true);
+        });
     }
 }
